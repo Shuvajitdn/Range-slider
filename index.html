@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Range Slider</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        html, body {
+            display: grid;
+            height: 100vh;
+            text-align: center;
+            place-items: center;
+            background: #0492f1;
+        }
+
+        .range {
+            height: 100px;
+            width: 380px;
+            background: #fff;
+            border-radius: 10px;
+            padding: 10px 45px;
+            box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .sliderValue {
+            position: relative;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .sliderValue span {
+            position: absolute;
+            height: 40px;
+            width: 40px;
+            font-weight: 600;
+            font-size: 18px;
+            top: -50px;
+            line-height: 40px;
+            color: #fff;
+            background: #045fa4;
+            border-radius: 50%;
+            transform: translateX(-50%) scale(0);
+            transition: transform 0.2s ease-in-out, background 0.3s ease-in-out;
+            box-shadow: 0px 0px 10px rgba(4, 95, 164, 0.5);
+        }
+
+        .sliderValue span.show {
+            transform: translateX(-50%) scale(1.2);
+            background: #03a9f4;
+            box-shadow: 0px 0px 15px rgba(3, 169, 244, 0.7);
+        }
+
+        .field {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .field .value {
+            font-size: 18px;
+            color: #045fa4;
+            font-weight: 600;
+            position: absolute;
+        }
+
+        .field .value.left {
+            left: -22px;
+        }
+
+        .field .value.right {
+            right: -43px;
+        }
+
+        .field input[type="range"] {
+            width: 100%;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 6px;
+            background: linear-gradient(to right, #04a9f4, #045fa4);
+            border-radius: 5px;
+            outline: none;
+            transition: background 0.3s ease-in-out;
+        }
+
+        .field input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 22px;
+            height: 22px;
+            background: #045fa4;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0px 0px 8px rgba(4, 95, 164, 0.5);
+        }
+
+        .field input[type="range"]:hover::-webkit-slider-thumb {
+            background: #03a9f4;
+            box-shadow: 0px 0px 12px rgba(3, 169, 244, 0.8);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="range">
+        <div class="sliderValue">
+            <span id="sliderValue">0</span>
+        </div>
+
+        <div class="field">
+            <div class="value left">0</div>
+            <input id="slider" type="range" min="0" max="100" value="0" step="1">
+            <div class="value right">100</div>
+        </div>
+    </div>
+
+    <script>
+        const slideValue = document.querySelector("#sliderValue");
+        const inputSlider = document.querySelector("#slider");
+
+        inputSlider.oninput = () => {
+            let value = inputSlider.value;
+            slideValue.textContent = value;
+
+            // Adjust position of tooltip
+            let percent = ((value - inputSlider.min) / (inputSlider.max - inputSlider.min)) * 100;
+            slideValue.style.left = `calc(${percent}% - 15px)`;
+
+            slideValue.classList.add("show");
+        };
+
+        // Hide tooltip when slider is not in use
+        inputSlider.onblur = () => {
+            slideValue.classList.remove("show");
+        };
+    </script>
+
+</body>
+</html>
